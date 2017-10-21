@@ -11,17 +11,19 @@
 |
 */
 
-Route::group(array('prefix' => 'api'), function()
-{
+// Route::group(array('prefix' => 'api'), function()
+// {
 
-  Route::get('/', function () {
-      return response()->json(['message' => 'YouPluv API', 'status' => 'Connected']);;
-  });
+//   Route::get('/', function () {
+//       return response()->json(['message' => 'YouPluv API', 'status' => 'Connected']);;
+//   });
 
-  //   Route::resource('companies', 'CompaniesController');
-  Route::resource('TipoUsuario', 'TipoUsuarioController');
-});
+//   //   Route::resource('companies', 'CompaniesController');
+//   Route::resource('TipoUsuario', 'TipoUsuarioController');
+// });
 
-Route::get('/', function () {
-    return redirect('api');
-});
+// Route::get('/', function () {
+//     return redirect('api');
+// });
+
+Route::get('/TipoUsuario', 'TipoUsuarioController@index');
