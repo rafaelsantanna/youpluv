@@ -14,4 +14,5 @@
 Route::get('/', function () {
     return response()->json(['message' => 'YouPluv API', 'status' => 'Connected']);;
 });
-Route::get('/TipoUsuario', 'TipoUsuarioController@index');
+
+Route::resource('/TipoUsuario', 'TipoUsuarioController');
