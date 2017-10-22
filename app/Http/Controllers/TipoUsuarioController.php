@@ -46,12 +46,12 @@ class TipoUsuarioController extends Controller
             return response()->json([
                 'message' => 'Record not found',
             ], 404);
-            
-        $tipoUsuario->fill($request->all());
+        }
+        
+        $tipoUsuario->update($request->all());
         $tipoUsuario->save();
         
         return response()->json($tipoUsuario);
-        }
     }
     
     public function destroy($id)
