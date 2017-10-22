@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <title>Postman - test Api Rest</title>
+
+</head>
+
+<body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+        var url = "http://localhost/youpluv/public/Regiao";
+
+            getRest(url);
+
+            // postRest(url);
+
+            // putRest(url, 3);
+
+            // deleteRest(url, 4);
+        });
+
+        function getRest(url) {
+            $.ajax({
+                url: url,
+                type: "GET",
+                dataType: "JSON",
+                success: function (response) {
+                    console.log(response);
+                }
+            });
+        }
+
+        function postRest(url) {
+            $.ajax({
+                url: url,
+                type: "POST",
+                dataType: "JSON",
+                data: {
+                    "descricao": "teste",
+                    "ativo": 1
+                },
+                success: function (response) {
+                    getRest(url);
+                }
+            });
+        }
+
+        function putRest(url, id) {
+            $.ajax({
+                url: url + "/" + id,
+                type: "PUT",
+                dataType: "JSON",
+                data: {
+                    "descricao": "teste2"
+                },
+                success: function (response) {
+                    getRest(url);
+                }
+            });
+        }
+
+        function deleteRest(url, id) {
+            $.ajax({
+                url: url + "/" + id,
+                type: "DELETE",
+                dataType: "JSON",
+                success: function (response) {
+                    getRest(url);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
