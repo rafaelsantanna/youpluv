@@ -8,20 +8,20 @@
 </head>
 
 <body>
-
+        <pre id="get" style="word-wrap: break-word; white-space: pre-wrap;"></pre>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>
 
         $(document).ready(function () {
-        var url = "http://localhost/youpluv/public/Regiao";
+        var url = "http://localhost/youpluv/public/NivelAlerta";
 
             getRest(url);
 
             // postRest(url);
 
-            // putRest(url, 3);
+            // putRest(url, 1);
 
-            // deleteRest(url, 4);
+            // deleteRest(url, 2);
         });
 
         function getRest(url) {
@@ -30,7 +30,7 @@
                 type: "GET",
                 dataType: "JSON",
                 success: function (response) {
-                    console.log(response);
+                    $("#get").text(JSON.stringify(response));
                 }
             });
         }
@@ -41,8 +41,7 @@
                 type: "POST",
                 dataType: "JSON",
                 data: {
-                    "descricao": "teste",
-                    "ativo": 1
+                    "descr_alerta": "teste"
                 },
                 success: function (response) {
                     getRest(url);
@@ -56,7 +55,7 @@
                 type: "PUT",
                 dataType: "JSON",
                 data: {
-                    "descricao": "teste2"
+                    "descr_alerta": "DEFAULT"
                 },
                 success: function (response) {
                     getRest(url);
