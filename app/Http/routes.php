@@ -22,3 +22,4 @@ Route::get('/', function () {
 
 Route::resource('/TipoUsuario', 'TipoUsuarioController');
 Route::resource('/Regiao', 'RegiaoController');
+Route::resource('/NivelAlerta', 'NivelAlertaController');
