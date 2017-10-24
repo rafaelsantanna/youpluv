@@ -20,6 +20,7 @@ Route::get('/', function () {
     return response()->json(['message' => 'YouPluv API', 'status' => 'Connected']);;
 });
 
+Route::resource('/Usuario', 'UsuarioController');
 Route::resource('/TipoUsuario', 'TipoUsuarioController');
 Route::resource('/Regiao', 'RegiaoController');
 Route::resource('/NivelAlerta', 'NivelAlertaController');
