@@ -2,4 +2,4 @@
 
 # checklist
 
-- falta testar o PUT do modelo TipoUsuario no Postman
+- Depois que terminar todos os cruds preencha no modelo de cada um os relacionamentos;
