@@ -25,3 +25,4 @@ Route::resource('/TipoUsuario', 'TipoUsuarioController');
 Route::resource('/Regiao', 'RegiaoController');
 Route::resource('/NivelAlerta', 'NivelAlertaController');
 Route::resource('/TabuaMare', 'TabuaMareController');
+Route::resource('/Nascente', 'NascenteController');
