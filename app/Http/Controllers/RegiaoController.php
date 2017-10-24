@@ -65,5 +65,7 @@ class RegiaoController extends Controller
         }
         
         $regiao->delete();
+
+        return response()->json("deletado com sucesso");
     }
 }

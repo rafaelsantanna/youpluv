@@ -65,5 +65,7 @@ class TipoUsuarioController extends Controller
         }
         
         $tipoUsuario->delete();
+
+        return response()->json("deletado com sucesso");
     }
 }

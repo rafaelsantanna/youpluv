@@ -65,5 +65,7 @@ class NivelAlertaController extends Controller
         }
         
         $nivelAlerta->delete();
+
+        return response()->json("deletado com sucesso");
     }
 }
