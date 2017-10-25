@@ -26,3 +26,4 @@ Route::resource('/Regiao', 'RegiaoController');
 Route::resource('/NivelAlerta', 'NivelAlertaController');
 Route::resource('/TabuaMare', 'TabuaMareController');
 Route::resource('/Nascente', 'NascenteController');
+Route::resource('/DadosPluv', 'DadosPluvController');
