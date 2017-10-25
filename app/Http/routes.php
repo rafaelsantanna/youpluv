@@ -20,10 +20,11 @@ Route::get('/', function () {
     return response()->json(['message' => 'YouPluv API', 'status' => 'Connected']);;
 });
 
+Route::resource('/DadosPluv', 'DadosPluvController');
 Route::resource('/Usuario', 'UsuarioController');
 Route::resource('/TipoUsuario', 'TipoUsuarioController');
 Route::resource('/Regiao', 'RegiaoController');
+Route::resource('/Alerta', 'AlertaController');
 Route::resource('/NivelAlerta', 'NivelAlertaController');
 Route::resource('/TabuaMare', 'TabuaMareController');
 Route::resource('/Nascente', 'NascenteController');
-Route::resource('/DadosPluv', 'DadosPluvController');
