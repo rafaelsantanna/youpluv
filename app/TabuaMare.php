@@ -9,4 +9,8 @@ class TabuaMare extends Model
     protected $table = "TABUA_MARES";
 
     protected $fillable = ['descricao', 'ativo'];
+
+    public function tabuaMaresDado(){
+        return $this->belongsTo('App\TabuaMaresDado');
+    }
 }

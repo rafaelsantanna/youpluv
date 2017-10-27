@@ -10,4 +10,8 @@ class TipoUsuario extends Model
 
     protected $fillable = ['descricao', 'ativo'];
 
+    public function usuario() {
+        return $this->belongsTo('App\Usuario');
+    }
+
 }
