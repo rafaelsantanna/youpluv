@@ -11,6 +11,6 @@ class NivelAlerta extends Model
     protected $fillable = ['descr_alerta', 'classificacao','cor', 'ativo'];
     
     public function alerta() {
-        return $this->belongsTo('App\Alerta');
+        return $this->belongsToMany('App\Alerta');
     }
 }

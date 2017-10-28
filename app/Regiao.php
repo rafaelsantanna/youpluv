@@ -11,7 +11,7 @@ class Regiao extends Model
     protected $fillable = ['descricao', 'latitude', 'longitude', 'raio', 'ativo'];
 
     public function usuario() {
-        return $this->belongsTo('App\Usuario');
+        return $this->belongsToMany('App\Usuario');
     }
 
     public function nascente() {

@@ -11,7 +11,7 @@ class Nascente extends Model
     protected $fillable = ['descr_nascente', 'latitude', 'longitude', 'ativo', 'usuario_id', 'regiao_id'];
 
     public function usuario() {
-        return $this->hasOne('App\Usuario');
+        return $this->hasMany('App\Usuario');
     }
 
     public function regiao() {

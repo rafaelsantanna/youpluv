@@ -23,7 +23,7 @@ class Usuario extends Model
     }
 
     public function dadosPluv() {
-        return $this->belongsTo('App\DadosPluv');
+        return $this->belongsToMany('App\DadosPluv');
     }
 
     public function alerta() {
