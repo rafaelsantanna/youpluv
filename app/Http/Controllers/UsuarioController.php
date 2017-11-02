@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 
+use Hash;
+
 use App\Usuario;
 
 class UsuarioController extends Controller
@@ -33,6 +35,7 @@ class UsuarioController extends Controller
     {
         $usuario = new Usuario();
         $usuario->fill($request->all());
+        $usuario->senha = Hash::make($request->senha);
         $usuario->save();
         
         return response()->json($request,201);

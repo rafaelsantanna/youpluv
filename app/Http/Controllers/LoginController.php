@@ -23,16 +23,13 @@ class LoginController extends Controller
                 'error' => 'Invalid credentials'
             ], 401);
         }
-
+    
         //Valida Senha
-        if($credentials['senha'] != $usuario->senha){
+        if(!Hash::check($credentials['senha'], $usuario->senha)){
             return response()->json([
                 'error' => 'Invalid credentials'
             ], 401);
         }
-        
-        //gerando um hash aleatório para salvar o token
-        $token = Hash::make($credentials['senha']);
 
         return response()->json('Logado!!');
     }
