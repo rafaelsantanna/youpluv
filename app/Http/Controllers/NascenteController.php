@@ -10,6 +10,10 @@ use App\Nascente;
 
 class NascenteController extends Controller
 {
+    public function __construct() {
+        $this->middleware('jwt.auth');
+    }
+
     public function index()
     {
         $nascente = Nascente::all();

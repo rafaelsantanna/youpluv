@@ -10,6 +10,10 @@ use App\NivelAlerta;
 
 class NivelAlertaController extends Controller
 {
+    public function __construct() {
+        $this->middleware('jwt.auth');
+    }
+
     public function index()
     {
         $nivelAlerta = NivelAlerta::all();

@@ -10,6 +10,10 @@ use App\Alerta;
 
 class AlertaController extends Controller
 {
+    public function __construct() {
+        $this->middleware('jwt.auth');
+    }
+
     public function index()
     {
         $alerta = Alerta::all();

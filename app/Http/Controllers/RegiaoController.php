@@ -10,6 +10,10 @@ use App\Regiao;
 
 class RegiaoController extends Controller
 {
+    public function __construct() {
+        $this->middleware('jwt.auth');
+    }
+
     public function index()
     {
         $regiao = Regiao::all();
