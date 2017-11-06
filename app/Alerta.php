@@ -8,6 +8,7 @@ class Alerta extends Model
 {
     protected $table = "ALERTAS";
 
+    //regiao, nivel alerta, mensagem, titulo
     protected $fillable = ['latitude', 'longitude', 'data_alerta', 'obs', 'ativo', 'usuario_id', 'nivel_alerta_id'];
 
     public function usuario() {
