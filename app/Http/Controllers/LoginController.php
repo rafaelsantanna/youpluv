@@ -30,9 +30,51 @@ class LoginController extends Controller
         $usuario = Usuario::where('email', $credentials['email'])->first();
         $usuario->update(['id_device' => $request->id_device]);
         $usuario->save();
+        
+        $player_id = $request->id_device;
+
+        $this->createIdDevice($player_id);
 
         // all good so return the token
         return response()->json(compact('token'));
+    }
+
+    public function createIdDevice($player_id){
+        $fields = array( 
+            'app_id' => "b2af917e-e731-437c-b6a2-f27a34760eba", 
+            'identifier' => "$player_id", 
+            'language' => "pt", 
+            'timezone' => "-28800", 
+            'game_version' => "1.0", 
+            'device_os' => "6.0", 
+            'device_type' => "1", 
+            'device_model' => "XT1225", 
+            'tags' => array("foo" => "bar") 
+            ); 
+            
+            $fields = json_encode($fields); 
+            print("\nJSON sent:\n"); 
+            print($fields); 
+            
+            $ch = curl_init(); 
+            curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/players"); 
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json')); 
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
+            curl_setopt($ch, CURLOPT_HEADER, FALSE); 
+            curl_setopt($ch, CURLOPT_POST, TRUE); 
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields); 
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
+            
+            $response = curl_exec($ch); 
+            curl_close($ch); 
+            
+            $return["allresponses"] = $response; 
+            $return = json_encode( $return); 
+            
+            print("\n\nJSON received:\n"); 
+            print($return); 
+            print("\n");
+            
     }
 
 }

@@ -7,4 +7,6 @@
 - Verificar com alguém na comunidade sobre esses relacionamentos se estão OK
 - fazer a autenticação; OK
 - fazer envio da notificação após criação do alerta {tem que mudar os campos da tabela alerta, e logo após terminar de configurar o envio da mensagem}
+- Salvar o Player_id que é gerado no one signal no BD;
+
 - Fazer validações no backend;(deixar por ultimo);
