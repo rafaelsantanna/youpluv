@@ -27,22 +27,19 @@ class LoginController extends Controller
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
         
-        $usuario = Usuario::where('email', $credentials['email'])->first();
-        $usuario->update(['id_device' => $request->id_device]);
-        $usuario->save();
-        
-        $player_id = $request->id_device;
+        $id_device = $request->id_device;
+        $email = $credentials['email'];
 
-        $this->createIdDevice($player_id);
+        $this->createIdDevice($id_device,$email);
 
         // all good so return the token
         return response()->json(compact('token'));
     }
 
-    public function createIdDevice($player_id){
+    public function createIdDevice($id_device, $email){
         $fields = array( 
             'app_id' => "b2af917e-e731-437c-b6a2-f27a34760eba", 
-            'identifier' => "$player_id", 
+            'identifier' => "$id_device", 
             'language' => "pt", 
             'timezone' => "-28800", 
             'game_version' => "1.0", 
@@ -53,8 +50,6 @@ class LoginController extends Controller
             ); 
             
             $fields = json_encode($fields); 
-            print("\nJSON sent:\n"); 
-            print($fields); 
             
             $ch = curl_init(); 
             curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/players"); 
@@ -67,14 +62,16 @@ class LoginController extends Controller
             
             $response = curl_exec($ch); 
             curl_close($ch); 
+
+            //Pegando o retorno do Player_id enviado pelo OneSignal e armazenando no usuário
+            $return = json_decode($response, true);
+            $player_id = $return['id'];
             
-            $return["allresponses"] = $response; 
-            $return = json_encode( $return); 
-            
-            print("\n\nJSON received:\n"); 
-            print($return); 
-            print("\n");
-            
+//            dd($player_id);
+
+            $usuario = Usuario::where('email', $email)->first();
+            $usuario->update = (['id_device' => $player_id]);
+            $usuario->save();
     }
 
 }
