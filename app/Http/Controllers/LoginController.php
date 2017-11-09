@@ -27,26 +27,26 @@ class LoginController extends Controller
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
         
-        $id_device = $request->id_device;
         $email = $credentials['email'];
+        $id_device = $request->id_device;
+        $model = $request->model;
+        $version = $request->version;
 
-        $this->createIdDevice($id_device,$email);
+        $this->createIdDevice($id_device,$email, $model, $version);
 
         // all good so return the token
         return response()->json(compact('token'));
     }
 
-    public function createIdDevice($id_device, $email){
+    public function createIdDevice($id_device, $email, $model, $version){
         $fields = array( 
             'app_id' => "b2af917e-e731-437c-b6a2-f27a34760eba", 
             'identifier' => "$id_device", 
             'language' => "pt", 
-            'timezone' => "-28800", 
-            'game_version' => "1.0", 
-            'device_os' => "6.0", 
+            'device_os' => "$version", 
             'device_type' => "1", 
-            'device_model' => "XT1225", 
-            'tags' => array("foo" => "bar") 
+            'device_model' => "$model", 
+            'game_version' => '1.0'
             ); 
             
             $fields = json_encode($fields); 
@@ -63,14 +63,12 @@ class LoginController extends Controller
             $response = curl_exec($ch); 
             curl_close($ch); 
 
-            //Pegando o retorno do Player_id enviado pelo OneSignal e armazenando no usuário
+            //Pegando o retorno do OneSignal, armazenando o player_id em uma váriavel e salvando no BD
             $return = json_decode($response, true);
             $player_id = $return['id'];
-            
-//            dd($player_id);
 
             $usuario = Usuario::where('email', $email)->first();
-            $usuario->update = (['id_device' => $player_id]);
+            $usuario->id_device = $player_id;
             $usuario->save();
     }
 
