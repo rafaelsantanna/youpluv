@@ -17,8 +17,4 @@ class Regiao extends Model
     public function nascente() {
         return $this->belongsTo('App\Nascente');
     }
-
-    public function alerta() {
-        return $this->belongsTo('App\Alerta');
-    }
 }
