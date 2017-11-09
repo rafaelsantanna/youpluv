@@ -29,4 +29,4 @@ Route::resource('/NivelAlerta', 'NivelAlertaController');
 Route::resource('/TabuaMare', 'TabuaMareController');
 Route::resource('/TabuaMaresDado', 'TabuaMaresDadoController');
 Route::resource('/Nascente', 'NascenteController');
-Route::post('/login', 'LoginController@autenticar');
+Route::post('/Login', 'LoginController@autenticar');
