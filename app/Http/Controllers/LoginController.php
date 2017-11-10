@@ -32,10 +32,15 @@ class LoginController extends Controller
         $model = $request->model;
         $version = $request->version;
 
+        // Metodo que cria o Device no OneSignal
         $this->createIdDevice($id_device,$email, $model, $version);
 
-        // all good so return the token
-        return response()->json(compact('token'));
+        // retornando id do usuário após o Login
+        $usuario = Usuario::where('email', $email)->first();
+        $id = $usuario->id;
+
+        // all good so return the token and usuario->id
+        return response()->json(compact('id','token'));
     }
 
     public function createIdDevice($id_device, $email, $model, $version){
