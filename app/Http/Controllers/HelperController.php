@@ -8,7 +8,7 @@ use App\Http\Requests;
 
 class HelperController extends Controller
 {
-    //Controller para actions diversas
+    //Controller para metodos diversos
 
     //getWeather faz um get na api da hgbrasil e retorna o clima do Rio de Janeiro
     public function getWeather(){
