@@ -10,6 +10,7 @@ class HelperController extends Controller
 {
     //Controller para actions diversas
 
+    //getWeather faz um get na api da hgbrasil e retorna o clima do Rio de Janeiro
     public function getWeather(){
         $ch = curl_init(); 
         curl_setopt($ch, CURLOPT_URL, "https://api.hgbrasil.com/weather/?format=json&city_name=Rio%20de%20Janeiro&key=223bb351"); 
