@@ -8,7 +8,7 @@ class Alerta extends Model
 {
     protected $table = "ALERTAS";
 
-    protected $fillable = ['latitude', 'longitude', 'data_alerta', 'obs', 'ativo', 'usuario_id', 'nivel_alerta_id'];
+    protected $fillable = ['latitude', 'longitude','raio', 'data_alerta', 'usuario_id', 'nivel_alerta_id', 'titulo', 'mensagem', 'ativo'];
 
     public function usuario() {
         return $this->hasOne('App\Usuario');

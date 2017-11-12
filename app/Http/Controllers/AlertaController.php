@@ -8,6 +8,7 @@ use App\Http\Requests;
 
 use App\Usuario;
 use App\Alerta;
+use DB;
 
 class AlertaController extends Controller
 {
@@ -39,23 +40,31 @@ class AlertaController extends Controller
         $alerta = new Alerta();
         $alerta->fill($request->all());
         $alerta->save();
-
-        // $mensagem = $request->mensagem;
-        // $usuarios = Usuario::where('id_regiao', $request->id_regiao)->get();
-        // $player_id = $usuarios->id_device;
-
-        //Após salvar o alerta é executado o sendMessage que envia a notificação para o APP
-        //Configurar a mensagem e os player_id que vão receber a mensagem
-
-        $response = $this->sendMessage();
-        $return["allresponses"] = $response;
-        $return = json_encode( $return);
         
-        print("\n\nJSON received:\n");
-        print($return);
-        print("\n");
+        //capturando o ID do alerta após a criação dele
+        $last_id = DB::select('SELECT LAST_INSERT_ID()');
+        $last_id = $last_id[0]->{'LAST_INSERT_ID()'};
+
+        // armazenando o retorno da procedure que é um array que contém as regiões que o alerta vai afetar
+        $regioes_do_alerta = DB::select("call vw_find_regioes_by_alerta_id($last_id)");
         
-        // return response()->json($request,201);
+        $regiao_id = [];
+        // este trecho armazena os ID das regiões em um array para posteriormente ser utilizada para buscar os usuários
+        foreach ($regioes_do_alerta as $value) {
+            array_push($regiao_id, $value->id);
+        }
+        
+        // select na tabela usuário passando a regiao do usuário e armazenando todos os id_device dos usuários que estão naquela região
+        // o pluck serve para pegar a lista de valores que eu defini para ele pegar neste caso id_device 
+        $id_device = DB::table('USUARIOS')->whereIn('regiao_id', $regiao_id)->pluck('id_device');
+
+        //separando o array em uma string separada por vírgula
+        $player_id = implode(",", $id_device);
+        $titulo = $request->titulo;
+        
+        $response = $this->sendMessage($titulo, $player_id);
+        
+        return response()->json($request,201);
     }
     
     public function update(Request $request, $id)
@@ -89,22 +98,19 @@ class AlertaController extends Controller
         return response()->json("deletado com sucesso");
     }
 
-    public function sendMessage(){
+    public function sendMessage($titulo, $player_id){
         $content = array(
-            // "en" => 'English Message',
-            "pt" => "$mensagem"
+            "pt" => "$titulo"
             );
         
         $fields = array(
             'app_id' => "b2af917e-e731-437c-b6a2-f27a34760eba",
-            'include_player_ids' => array("07b9ac31-8ce0-4365-9cba-b4fd2fb508bb", "4b1839d7-c441-41a9-b7f2-6082d0cd2902"),
+            'include_player_ids' => array($player_id),
             'data' => array("foo" => "bar"),
             'contents' => $content
         );
         
         $fields = json_encode($fields);
-        print("\nJSON sent:\n");
-        print($fields);
         
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/notifications");
