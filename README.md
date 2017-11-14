@@ -11,4 +11,7 @@
 
 - fazer envio da notificação após criação do alerta { O alerta é criado e ele tem longitude e altitude, com a longitude e altitude do alerta através de uma procedure que o lemos criou conseguimos saber para quais regiões este alerta será encaminhado, sabendo disso nós enviamos uma notificação para todos os usuários destas regiões.} OK
 
+- consumir a api com os dados da tabua da maré, pesquisar no github pois lá ja tem projetos prontos consumindo a api.
+Exemplo: https://github.com/luiz-mai/api-tabua-mares
+
 - Fazer validações no backend;(deixar por ultimo);
