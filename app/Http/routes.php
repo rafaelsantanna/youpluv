@@ -32,4 +32,4 @@ Route::resource('/Nascente', 'NascenteController');
 
 Route::post('/Login', 'LoginController@autenticar');
 Route::get('/Weather', 'HelperController@getWeather');
-Route::get('/UsersRank', 'UsuarioController@getUsersRank');
+Route::get('/getClassificacao', 'UsuarioController@getClassificacao');
