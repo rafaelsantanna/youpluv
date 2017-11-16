@@ -8,12 +8,14 @@ use App\Http\Requests;
 
 use Hash;
 
+use DB;
+use App\DadosPluv;
 use App\Usuario;
 
 class UsuarioController extends Controller
 {
     public function __construct() {
-        $this->middleware('jwt.auth', ['except' => ['store']]);
+        $this->middleware('jwt.auth', ['except' => ['store', 'getUsersRank']]);
     }
 
     public function index()
@@ -74,5 +76,15 @@ class UsuarioController extends Controller
         $usuario->delete();
 
         return response()->json("deletado com sucesso");
+    }
+
+    // retorna o nome e o numero de vezes que o usuário já enviou dados pluviométricos
+    public function getUsersRank() {
+        $rank = DB::table('USUARIOS')->select('USUARIOS.nome', DB::raw('count(DADOS_PLUVS.usuario_id) as numero'))
+        ->join('DADOS_PLUVS', function($join){
+            $join->on('USUARIOS.id', '=', 'DADOS_PLUVS.usuario_id');
+        })->groupBy('usuario_id')->orderBy('numero', 'desc')->limit(10)->get();
+
+        return response()->json($rank);
     }
 }
