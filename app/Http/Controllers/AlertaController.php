@@ -56,13 +56,11 @@ class AlertaController extends Controller
         
         // select na tabela usuário passando a regiao do usuário e armazenando todos os id_device dos usuários que estão naquela região
         // o pluck serve para pegar a lista de valores que eu defini para ele pegar neste caso id_device 
-        $id_device = DB::table('USUARIOS')->whereIn('regiao_id', $regiao_id)->pluck('id_device');
+        $player_id = DB::table('USUARIOS')->whereIn('regiao_id', $regiao_id)->pluck('id_device');
 
-        //separando o array em uma string separada por vírgula
-        $player_id = implode(",", $id_device);
         $titulo = $request->titulo;
         
-        $response = $this->sendMessage($titulo, $player_id);
+        $this->sendMessage($titulo, $player_id);
         
         return response()->json($request,201);
     }
@@ -100,12 +98,13 @@ class AlertaController extends Controller
 
     public function sendMessage($titulo, $player_id){
         $content = array(
+            "en" => "English Message",
             "pt" => "$titulo"
             );
         
         $fields = array(
             'app_id' => "b2af917e-e731-437c-b6a2-f27a34760eba",
-            'include_player_ids' => array($player_id),
+            'include_player_ids' => $player_id,
             'data' => array("foo" => "bar"),
             'contents' => $content
         );
