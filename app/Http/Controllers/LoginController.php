@@ -28,53 +28,18 @@ class LoginController extends Controller
         }
         
         $email = $credentials['email'];
-        $id_device = $request->id_device;
-        $model = $request->model;
-        $version = $request->version;
+        $player_id = $request->userId;
 
-        // Metodo que cria o Device no OneSignal
-        $this->createIdDevice($id_device,$email, $model, $version);
-
-        // retornando id do usuário após o Login
+        //Salvando o player_id do usuário no BD 
         $usuario = Usuario::where('email', $email)->first();
+        $usuario->id_device = $player_id;
+        $usuario->save();
+
+        // armazenando o id do usuário para retornar para o front
         $id = $usuario->id;
 
         // all good so return the token and usuario->id
         return response()->json(compact('id','token'));
-    }
-
-    public function createIdDevice($id_device, $email, $model, $version){
-        $fields = array( 
-            'app_id' => "b2af917e-e731-437c-b6a2-f27a34760eba", 
-            'identifier' => "$id_device", 
-            'language' => "pt", 
-            'device_os' => "$version", 
-            'device_type' => "1", 
-            'device_model' => "$model", 
-            'game_version' => '1.0'
-            ); 
-            
-            $fields = json_encode($fields); 
-            
-            $ch = curl_init(); 
-            curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/players"); 
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json')); 
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
-            curl_setopt($ch, CURLOPT_HEADER, FALSE); 
-            curl_setopt($ch, CURLOPT_POST, TRUE); 
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields); 
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
-            
-            $response = curl_exec($ch); 
-            curl_close($ch); 
-
-            //Pegando o retorno do OneSignal, armazenando o player_id em uma váriavel e salvando no BD
-            $return = json_decode($response, true);
-            $player_id = $return['id'];
-
-            $usuario = Usuario::where('email', $email)->first();
-            $usuario->id_device = $player_id;
-            $usuario->save();
     }
 
 }
