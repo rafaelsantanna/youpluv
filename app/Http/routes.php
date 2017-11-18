@@ -31,5 +31,8 @@ Route::resource('/TabuaMaresDado', 'TabuaMaresDadoController');
 Route::resource('/Nascente', 'NascenteController');
 
 Route::post('/Login', 'LoginController@autenticar');
+
 Route::get('/Weather', 'HelperController@getWeather');
+
 Route::get('/getClassificacao', 'UsuarioController@getClassificacao');
+Route::post('/redefinirSenha', 'UsuarioController@redefinirSenha');

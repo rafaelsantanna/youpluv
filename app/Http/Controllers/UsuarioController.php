@@ -60,7 +60,7 @@ class UsuarioController extends Controller
         $usuario->update($request->all());
         $usuario->save();
         
-        return response()->json($usuario);
+        return response()->json($usuario, 201);
     }
     
     public function destroy($id)
@@ -86,5 +86,26 @@ class UsuarioController extends Controller
         })->groupBy('usuario_id')->orderBy('numero', 'desc')->limit(10)->get();
 
         return response()->json($classificacao);
+    }
+
+    public function redefinirSenha(Request $request){
+        $usuario = Usuario::find($request->id);
+
+        if(!$usuario){
+            return response()->json([
+                'message' => 'Record not found'
+            ], 404);
+        }
+
+        if(Hash::check($request->senha, $usuario->senha)){
+            $usuario->senha = Hash::make($request->newSenha);
+            $usuario->save();
+
+            return response()->json($usuario, 201);
+        }else {
+            return response()->json([
+                'message' => 'Senha Incorreta'
+            ], 404);
+        }
     }
 }
