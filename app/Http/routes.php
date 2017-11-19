@@ -36,3 +36,5 @@ Route::get('/Weather', 'HelperController@getWeather');
 
 Route::get('/getClassificacao', 'UsuarioController@getClassificacao');
 Route::post('/redefinirSenha', 'UsuarioController@redefinirSenha');
+
+Route::get('/dadosTabuaMare/{localID}{mes}{ano}', 'TabuaMaresDadoController@dadosTabuaMare');
