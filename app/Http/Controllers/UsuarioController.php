@@ -15,7 +15,7 @@ use App\Usuario;
 class UsuarioController extends Controller
 {
     public function __construct() {
-        $this->middleware('jwt.auth', ['except' => ['store', 'getClassificacao']]);
+        $this->middleware('jwt.auth', ['except' => ['store', 'getClassificacao', 'geocode']]);
     }
 
     public function index()
@@ -38,10 +38,21 @@ class UsuarioController extends Controller
     }
     
     public function store(Request $request)
-    {
+    {        
+        // este trecho serve para conseguir definir a região_id do usuário
+        // primeiro conseguimos a latitude e longitude e depois rodamos a procedure para conseguir a regiao_id e armazenar no banco
+        $endereco = $request->endereco + " " + $request->cep;
+        $geoloc = $this->geocode($endereco);
+        $lat = $geoloc['results'][0]['geometry']['location']['lat'];
+        $lng = $geoloc['results'][0]['geometry']['location']['lng'];
+        
+        // este techo executa a procedure passando a latitude, longitude e raio 
+        $regiao_id = DB::table('USUARIOS')->select(DB::raw("fn_findRegiaoIdByUserAddress('$lat', '$lng', '1.0') AS regiao_id"))->first();
+        
         $usuario = new Usuario();
         $usuario->fill($request->all());
         $usuario->senha = Hash::make($request->senha);
+        $usuario->regiao_id = $regiao_id->regiao_id;
         $usuario->save();
         
         return response()->json($request,201);
@@ -107,5 +118,18 @@ class UsuarioController extends Controller
                 'message' => 'Senha Incorreta'
             ], 404);
         }
+    }
+
+    // retornando dados da api do google para capturar a longitude e altitude do endereço do usuário que acabou de se cadastrar
+    public function geocode($endereco) {
+        $enderecoFormatado = str_replace (" ", "+", $endereco);
+        $details_url = "https://maps.googleapis.com/maps/api/geocode/json?address=" . $enderecoFormatado . "&key=AIzaSyB97YTHFUmjedJEvxqKv-nZAqvGt9plhlo&sensor=false";
+     
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $details_url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $geoloc = json_decode(curl_exec($ch), true);
+
+        return $geoloc;
     }
 }
