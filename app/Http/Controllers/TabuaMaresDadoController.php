@@ -136,8 +136,7 @@ class TabuaMaresDadoController extends Controller
         $dia->medicoes = $medicoes;
         $dias[] = $dia;
         $json->dias = $dias;
-        $retorno = json_encode($json);
 
-        return response()->json($retorno);
+        return response()->json($json);
     }
 }
