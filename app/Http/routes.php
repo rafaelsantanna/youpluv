@@ -20,15 +20,17 @@ Route::get('/', function () {
     return response()->json(['message' => 'YouPluv API', 'status' => 'Connected']);;
 });
 
-Route::resource('/DadosPluv', 'DadosPluvController');
-Route::resource('/Usuario', 'UsuarioController');
-Route::resource('/TipoUsuario', 'TipoUsuarioController');
-Route::resource('/Regiao', 'RegiaoController');
-Route::resource('/Alerta', 'AlertaController');
-Route::resource('/NivelAlerta', 'NivelAlertaController');
-Route::resource('/TabuaMare', 'TabuaMareController');
-Route::resource('/TabuaMaresDado', 'TabuaMaresDadoController');
-Route::resource('/Nascente', 'NascenteController');
+Route::group(['middleware' => ['refresh.token']], function () {
+    Route::resource('/Usuario', 'UsuarioController');
+    Route::resource('/DadosPluv', 'DadosPluvController');
+    Route::resource('/TipoUsuario', 'TipoUsuarioController');
+    Route::resource('/Regiao', 'RegiaoController');
+    Route::resource('/Alerta', 'AlertaController');
+    Route::resource('/NivelAlerta', 'NivelAlertaController');
+    Route::resource('/TabuaMare', 'TabuaMareController');
+    Route::resource('/TabuaMaresDado', 'TabuaMaresDadoController');
+    Route::resource('/Nascente', 'NascenteController');
+});
 
 Route::post('/Login', 'LoginController@autenticar');
 
