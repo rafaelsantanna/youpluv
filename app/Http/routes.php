@@ -40,3 +40,5 @@ Route::post('/redefinirSenha', 'UsuarioController@redefinirSenha');
 Route::get('/dadosTabuaMare/{localID}{mes}{ano}', 'TabuaMaresDadoController@dadosTabuaMare');
 
 Route::get('/getAlertasUsuario/{usuario_id}', 'AlertaController@getAlertasUsuario');
+
+Route::get('/getRegistroUsuario/{usuario_id}', 'DadosPluvController@getRegistroUsuario');

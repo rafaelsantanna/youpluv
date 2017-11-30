@@ -8,10 +8,12 @@ use App\Http\Requests;
 
 use App\DadosPluv;
 
+use DB;
+
 class DadosPluvController extends Controller
 {
     public function __construct() {
-        $this->middleware('jwt.auth');
+        $this->middleware('jwt.auth', ['except' => ['getRegistroUsuario']]);
     }
 
     public function index()
@@ -71,5 +73,17 @@ class DadosPluvController extends Controller
         $dadosPluv->delete();
 
         return response()->json("deletado com sucesso");
+    }
+
+    public function getRegistroUsuario($usuario_id){
+        
+        if(!$usuario_id){
+            return response()->json([
+                'message' => 'Record not found',
+            ], 404);
+        }
+        
+        $registrosUsuario = DB::table('DADOS_PLUVS')->where('usuario_id', $usuario_id)->limit(20)->get();
+        return response()->json($registrosUsuario);
     }
 }
