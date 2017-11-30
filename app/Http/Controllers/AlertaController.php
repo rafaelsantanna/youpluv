@@ -13,7 +13,7 @@ use DB;
 class AlertaController extends Controller
 {
     public function __construct() {
-        $this->middleware('jwt.auth');
+        $this->middleware('jwt.auth', ['except' => ['getAlertasUsuario']]);
     }
 
     public function index()
@@ -125,5 +125,19 @@ class AlertaController extends Controller
         curl_close($ch);
         
         return $response;
+    }
+
+    // retorna os 10 ultimos alertas que o usuário recebeu
+    public function getAlertasUsuario($usuario_id){
+
+        if(!$usuario_id){
+            return response()->json([
+                'message' => 'Record not found',
+            ], 404);
+        }
+
+        $alertas = DB::select("call pcd_find_alertas_by_usuario_id($usuario_id, 10);");
+
+        return response()->json($alertas);
     }
 }
