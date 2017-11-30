@@ -15,6 +15,4 @@
 Exemplo: https://github.com/luiz-mai/api-tabua-mares 
 o Consumo está ok, utilizei essa api do exemplo, agora falta cadastrar no BD; OK
 
-- configurar o expire token para não expirar;
-
-- Fazer validações no backend;(deixar por ultimo);
+- configurar o expire token para não expirar; OK
