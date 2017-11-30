@@ -21,7 +21,7 @@ class UsuarioController extends Controller
     public function index()
     {
         $usuario = Usuario::all();
-        return response()->json($usuario);
+        return response()->json($usuario, 200, [], JSON_NUMERIC_CHECK);
     }
 
     public function show($id)
@@ -34,7 +34,7 @@ class UsuarioController extends Controller
                 ], 404);
         }
         
-        return response()->json($usuario);
+        return response()->json($usuario, 200, [], JSON_NUMERIC_CHECK);
     }
     
     public function store(Request $request)
