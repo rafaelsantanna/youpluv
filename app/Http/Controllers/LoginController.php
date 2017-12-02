@@ -38,8 +38,10 @@ class LoginController extends Controller
         // armazenando o id do usuário para retornar para o front
         $id = $usuario->id;
 
+        $tipo_usuario_id = $usuario->tipo_usuario_id;
+
         // all good so return the token and usuario->id
-        return response()->json(compact('id','token'));
+        return response()->json(compact('id','tipo_usuario_id', 'token'));
     }
 
 }
