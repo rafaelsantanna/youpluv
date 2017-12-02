@@ -83,7 +83,7 @@ class DadosPluvController extends Controller
             ], 404);
         }
         
-        $registrosUsuario = DB::table('DADOS_PLUVS')->where('usuario_id', $usuario_id)->limit(20)->get();
+        $registrosUsuario = DB::table('DADOS_PLUVS')->where('usuario_id', $usuario_id)->limit(20)->orderBy('id','desc')->get();
         return response()->json($registrosUsuario);
     }
 
