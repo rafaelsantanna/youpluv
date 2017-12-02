@@ -56,7 +56,7 @@ class AlertaController extends Controller
         
         // select na tabela usuário passando a regiao do usuário e armazenando todos os id_device dos usuários que estão naquela região
         // o pluck serve para pegar a lista de valores que eu defini para ele pegar neste caso id_device 
-        $player_id = DB::table('USUARIOS')->whereIn('regiao_id', $regiao_id)->pluck('id_device');
+        $player_id = DB::table('USUARIOS')->whereIn('regiao_id', $regiao_id)->where('aut_alert', '1')->pluck('id_device');
 
         $titulo = $request->titulo;
         
