@@ -42,3 +42,4 @@ Route::get('/dadosTabuaMare/{localID}{mes}{ano}', 'TabuaMaresDadoController@dado
 Route::get('/getAlertasUsuario/{usuario_id}', 'AlertaController@getAlertasUsuario');
 
 Route::get('/getRegistroUsuario/{usuario_id}', 'DadosPluvController@getRegistroUsuario');
+Route::get('/getRegistroTresDias', 'DadosPluvController@getRegistroTresDias');

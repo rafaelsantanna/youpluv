@@ -86,4 +86,10 @@ class DadosPluvController extends Controller
         $registrosUsuario = DB::table('DADOS_PLUVS')->where('usuario_id', $usuario_id)->limit(20)->get();
         return response()->json($registrosUsuario);
     }
+
+    public function getRegistroTresDias() {
+        $registros = DB::table('DADOS_PLUVS')->whereRaw('created_at >= DATE_SUB(NOW(), INTERVAL 72 HOUR)')->get();
+
+        return response()->json($registros);
+    }
 }
