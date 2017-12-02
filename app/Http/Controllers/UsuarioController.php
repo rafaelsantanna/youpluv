@@ -15,7 +15,7 @@ use App\Usuario;
 class UsuarioController extends Controller
 {
     public function __construct() {
-        $this->middleware('jwt.auth', ['except' => ['store', 'getClassificacao', 'geocode']]);
+        $this->middleware('jwt.auth', ['except' => ['store', 'getClassificacao', 'geocode', 'update']]);
     }
 
     public function index()
@@ -67,8 +67,25 @@ class UsuarioController extends Controller
                 'message' => 'Record not found',
             ], 404);
         }
-        
+
+        //Verificando se o endereço ou cep do usuário foram alterados, se sim ele vai cadastrar uma nova região para o usuário entrando neste IF
+        if(($request->cep != $usuario->cep) || ($request->endereco != $usuario->endereco)){
+            // este trecho serve para conseguir definir a região_id do usuário
+            // primeiro conseguimos a latitude e longitude e depois rodamos a procedure para conseguir a regiao_id e armazenar no banco
+            $endereco = $request->endereco + " " + $request->cep;
+            $geoloc = $this->geocode($endereco);
+            $lat = $geoloc['results'][0]['geometry']['location']['lat'];
+            $lng = $geoloc['results'][0]['geometry']['location']['lng'];
+            
+            // este techo executa a procedure passando a latitude, longitude e raio 
+            $regiao_id = DB::table('USUARIOS')->select(DB::raw("fn_findRegiaoIdByUserAddress('$lat', '$lng', '1.0') AS regiao_id"))->first();
+        } else {
+            //se não entrar no if tem que setar algum valor para a variavel para não enviar null neste caso o mesmo valor da request
+            $regiao_id = $request->regiao_id;
+        }
+
         $usuario->update($request->all());
+        $usuario->regiao_id = $regiao_id;
         $usuario->save();
         
         return response()->json($usuario, 201);
