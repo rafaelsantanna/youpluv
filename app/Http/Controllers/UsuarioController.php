@@ -15,7 +15,7 @@ use App\Usuario;
 class UsuarioController extends Controller
 {
     public function __construct() {
-        $this->middleware('jwt.auth', ['except' => ['store', 'getClassificacao', 'geocode', 'update']]);
+        $this->middleware('jwt.auth', ['except' => ['store', 'getClassificacao', 'geocode']]);
     }
 
     public function index()
@@ -41,7 +41,7 @@ class UsuarioController extends Controller
     {        
         // este trecho serve para conseguir definir a região_id do usuário
         // primeiro conseguimos a latitude e longitude e depois rodamos a procedure para conseguir a regiao_id e armazenar no banco
-        $endereco = $request->endereco + " " + $request->cep;
+        $endereco = $request->endereco . " " . $request->cep;
         $geoloc = $this->geocode($endereco);
         $lat = $geoloc['results'][0]['geometry']['location']['lat'];
         $lng = $geoloc['results'][0]['geometry']['location']['lng'];
@@ -68,17 +68,21 @@ class UsuarioController extends Controller
             ], 404);
         }
         
-            $endereco = $request->endereco + " " + $request->cep;
+            $endereco = $request->endereco . " " . $request->cep;
             $geoloc = $this->geocode($endereco);
             $lat = $geoloc['results'][0]['geometry']['location']['lat'];
             $lng = $geoloc['results'][0]['geometry']['location']['lng'];
             
             // este techo executa a procedure passando a latitude, longitude e raio 
             $regiao_id = DB::table('USUARIOS')->select(DB::raw("fn_findRegiaoIdByUserAddress('$lat', '$lng', '1.0') AS regiao_id"))->first();
-
-        $usuario->update($request->all());
-        $usuario->regiao_id = $regiao_id;
-        $usuario->save();
+            $usuario->update($request->all());
+            //Fiz este foreach pra pegar somente o valor da regiao_id, pois não consegui pegar da forma normal (regiao_id[0])
+            foreach ($regiao_id as $value) {
+                $regiao_id = $value;
+                break;
+            }
+            $usuario->regiao_id = $regiao_id;
+            $usuario->save();
         
         return response()->json($usuario, 201);
     }
