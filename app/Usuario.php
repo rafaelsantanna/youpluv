@@ -15,7 +15,14 @@ class Usuario extends Model implements AuthenticatableContract, CanResetPassword
 
     protected $table = "USUARIOS";
 
-    protected $fillable = ['nome', 'email', 'senha', 'num_celular', 'cep', 'endereco', 'complemento', 'numero', 'uf', 'municipio', 'lembrar_token', 'aut_alert', 'ativo', 'id_device', 'tipo_usuario_id', 'regiao_id'];
+    protected $fillable = ['nome', 'email', 'senha', 'num_celular', 'cep', 'endereco', 'complemento', 'numero', 'uf', 'municipio', 'aut_alert', 'ativo', 'id_device', 'tipo_usuario_id', 'regiao_id'];
+
+    protected $casts = [
+        'aut_alert'   => 'int',
+        'ativo' => 'int',
+        'tipo_usuario_id' => 'int',
+        'regiao_id' => 'int'
+    ];
 
     public function getAuthPassword()
     {
