@@ -38,7 +38,13 @@ class UsuarioController extends Controller
     }
     
     public function store(Request $request)
-    {        
+    {      
+        //Verificando se o email já existe  
+        if(Usuario::where('email', $request->email)->first()){
+            return response()->json([
+                'message' => 'Email já existe'
+            ], 409);
+        }
         // este trecho serve para conseguir definir a região_id do usuário
         // primeiro conseguimos a latitude e longitude e depois rodamos a procedure para conseguir a regiao_id e armazenar no banco
         $endereco = $request->endereco . " " . $request->cep;
