@@ -28,11 +28,11 @@ class LoginController extends Controller
         }
         
         $email = $credentials['email'];
-        $player_id = $request->userId;
 
         //Salvando o player_id do usuário no BD 
         $usuario = Usuario::where('email', $email)->first();
-        $usuario->id_device = $player_id;
+        // player_id
+        $usuario->id_device = $request->id_device;
         $usuario->save();
 
         // armazenando o id do usuário para retornar para o front
