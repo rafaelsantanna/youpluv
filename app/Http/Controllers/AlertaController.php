@@ -13,7 +13,7 @@ use DB;
 class AlertaController extends Controller
 {
     public function __construct() {
-        $this->middleware('jwt.auth', ['except' => ['getAlertasUsuario']]);
+        $this->middleware('jwt.auth', ['except' => ['getAlertasUsuario', 'filtroAlertas']]);
     }
 
     public function index()
@@ -139,5 +139,15 @@ class AlertaController extends Controller
         $alertas = DB::select("call pcd_find_alertas_by_usuario_id($usuario_id, 10);");
 
         return response()->json($alertas);
+    }
+
+    public function filtroAlertas(Request $request){
+        $regiao_id = $request->regiao_id;
+        $data_inicio = $request->data_inicio;
+        $data_fim = $request->data_fim;
+
+        $filtro = DB::select("call pcd_find_alertas_by_regiao_id($regiao_id,'$data_inicio','$data_fim');");
+
+        return response()->json($filtro);
     }
 }
