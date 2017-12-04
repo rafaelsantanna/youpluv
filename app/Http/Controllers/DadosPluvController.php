@@ -98,18 +98,22 @@ class DadosPluvController extends Controller
         $data_inicio = $request->data_inicio;
         $data_fim = $request->data_fim;
 
+        //Retorna sem nenhum Filtro
         if(!$regiao_id && !$data_inicio && !$data_fim) {
             $filtro = DB::select("select * from vw_dados_pluv");
         }
 
+        //retorna filtrando por data somente
         if(!$regiao_id && $data_inicio != null && $data_fim != null){
             $filtro = DB::select("select * from vw_dados_pluv where hora_inicio BETWEEN '$data_inicio' and '$data_fim'");
         }
 
+        //retorna filtrando por região somente
         if($regiao_id != null && !$data_inicio && !$data_fim){
             $filtro = DB::select("select * from vw_dados_pluv where regiao_id = $regiao_id");
         }
 
+        //retorna filtrando região e data
         if($regiao_id != null && $data_inicio != null && $data_fim != null ){
             $filtro = DB::select("select * from vw_dados_pluv where regiao_id = $regiao_id and hora_inicio BETWEEN '$data_inicio' and '$data_fim'");
         }
