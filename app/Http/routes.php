@@ -44,3 +44,4 @@ Route::post('/filtroAlertas', 'AlertaController@filtroAlertas');
 
 Route::get('/getRegistroUsuario/{usuario_id}', 'DadosPluvController@getRegistroUsuario');
 Route::get('/getRegistroTresDias', 'DadosPluvController@getRegistroTresDias');
+Route::post('/filtroDadosPluvs/', 'DadosPluvController@filtroDadosPluvs');

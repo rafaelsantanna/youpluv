@@ -13,7 +13,7 @@ use DB;
 class DadosPluvController extends Controller
 {
     public function __construct() {
-        $this->middleware('jwt.auth', ['except' => ['getRegistroUsuario']]);
+        $this->middleware('jwt.auth', ['except' => ['getRegistroUsuario', 'filtroDadosPluvs']]);
     }
 
     public function index()
@@ -91,5 +91,28 @@ class DadosPluvController extends Controller
         $registros = DB::table('DADOS_PLUVS')->whereRaw('created_at >= DATE_SUB(NOW(), INTERVAL 72 HOUR)')->get();
 
         return response()->json($registros);
+    }
+
+    public function filtroDadosPluvs(Request $request) {
+        $regiao_id = $request->regiao_id;
+        $data_inicio = $request->data_inicio;
+        $data_fim = $request->data_fim;
+
+        if(!$regiao_id && !$data_inicio && !$data_fim) {
+            $filtro = DB::select("select * from vw_dados_pluv");
+        }
+
+        if(!$regiao_id && $data_inicio != null && $data_fim != null){
+            $filtro = DB::select("select * from vw_dados_pluv where hora_inicio BETWEEN '$data_inicio' and '$data_fim'");
+        }
+
+        if($regiao_id != null && !$data_inicio && !$data_fim){
+            $filtro = DB::select("select * from vw_dados_pluv where regiao_id = $regiao_id");
+        }
+
+        if($regiao_id != null && $data_inicio != null && $data_fim != null ){
+            $filtro = DB::select("select * from vw_dados_pluv where regiao_id = $regiao_id and hora_inicio BETWEEN '$data_inicio' and '$data_fim'");
+        }
+        return response()->json($filtro);
     }
 }
