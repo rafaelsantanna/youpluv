@@ -1,3 +1,3 @@
-![alt text](https://preview.ibb.co/c4VMNw/logo.png)
+![alt text](https://preview.ibb.co/bwc1Nw/logo.png)
 
 O presente trabalho tem como objetivo principal ser um instrumento auxiliar para tomada de decisões na área da Defesa Civil como prevenção de desastres trazendo informações de chuvas em tempo real de diversas áreas através de um aplicativo de celular, tendo a colaboração da própria população, com um simples pluviômetro caseiro, na geração de informações para a base de dados do sistema.
