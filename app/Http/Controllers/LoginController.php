@@ -31,7 +31,7 @@ class LoginController extends Controller
 
         //Salvando o player_id do usuário no BD 
         $usuario = Usuario::where('email', $email)->first();
-            if($usuario->id_device != null){
+            if($request->id_device != null){
                 $usuario->id_device = $request->id_device;
             }
         $usuario->save();
