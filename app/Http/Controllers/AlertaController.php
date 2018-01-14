@@ -59,6 +59,13 @@ class AlertaController extends Controller
         $player_id = DB::table('USUARIOS')->whereIn('regiao_id', $regiao_id)->where('aut_alert', '1')->pluck('id_device');
 
         $titulo = $request->titulo;
+
+        // Este trecho verifica se o tamanho da string de player_id é diferente de 36 que é o padrão, se for diferente ele remove do array
+        // Se passar um player_id com padrão diferente então push notification não é enviada.
+        foreach ($player_id as $key => $value) {
+            if(strlen($value) != 36)
+            unset($player_id[$key]);
+        }
         
         $this->sendMessage($titulo, $player_id);
         
